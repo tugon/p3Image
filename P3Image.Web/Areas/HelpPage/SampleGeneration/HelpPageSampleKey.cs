@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Http.Headers;
 
-namespace P3Image.Web.Areas.HelpPage.SampleGeneration
+namespace P3Image.Web.Areas.HelpPage
 {
     /// <summary>
-    ///     This is used to identify the place where the sample should be applied.
+    /// This is used to identify the place where the sample should be applied.
     /// </summary>
     public class HelpPageSampleKey
     {
         /// <summary>
-        ///     Creates a new <see cref="HelpPageSampleKey" /> based on media type.
+        /// Creates a new <see cref="HelpPageSampleKey"/> based on media type.
         /// </summary>
         /// <param name="mediaType">The media type.</param>
         public HelpPageSampleKey(MediaTypeHeaderValue mediaType)
@@ -21,14 +21,14 @@ namespace P3Image.Web.Areas.HelpPage.SampleGeneration
                 throw new ArgumentNullException("mediaType");
             }
 
-            ActionName = string.Empty;
-            ControllerName = string.Empty;
+            ActionName = String.Empty;
+            ControllerName = String.Empty;
             MediaType = mediaType;
             ParameterNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>
-        ///     Creates a new <see cref="HelpPageSampleKey" /> based on media type and CLR type.
+        /// Creates a new <see cref="HelpPageSampleKey"/> based on media type and CLR type.
         /// </summary>
         /// <param name="mediaType">The media type.</param>
         /// <param name="type">The CLR type.</param>
@@ -44,19 +44,17 @@ namespace P3Image.Web.Areas.HelpPage.SampleGeneration
         }
 
         /// <summary>
-        ///     Creates a new <see cref="HelpPageSampleKey" /> based on <see cref="SampleDirection" />, controller name, action
-        ///     name and parameter names.
+        /// Creates a new <see cref="HelpPageSampleKey"/> based on <see cref="SampleDirection"/>, controller name, action name and parameter names.
         /// </summary>
-        /// <param name="sampleDirection">The <see cref="SampleDirection" />.</param>
+        /// <param name="sampleDirection">The <see cref="SampleDirection"/>.</param>
         /// <param name="controllerName">Name of the controller.</param>
         /// <param name="actionName">Name of the action.</param>
         /// <param name="parameterNames">The parameter names.</param>
-        public HelpPageSampleKey(SampleDirection sampleDirection, string controllerName, string actionName,
-            IEnumerable<string> parameterNames)
+        public HelpPageSampleKey(SampleDirection sampleDirection, string controllerName, string actionName, IEnumerable<string> parameterNames)
         {
             if (!Enum.IsDefined(typeof(SampleDirection), sampleDirection))
             {
-                throw new InvalidEnumArgumentException("sampleDirection", (int) sampleDirection, typeof(SampleDirection));
+                throw new InvalidEnumArgumentException("sampleDirection", (int)sampleDirection, typeof(SampleDirection));
             }
             if (controllerName == null)
             {
@@ -78,16 +76,14 @@ namespace P3Image.Web.Areas.HelpPage.SampleGeneration
         }
 
         /// <summary>
-        ///     Creates a new <see cref="HelpPageSampleKey" /> based on media type, <see cref="SampleDirection" />, controller
-        ///     name, action name and parameter names.
+        /// Creates a new <see cref="HelpPageSampleKey"/> based on media type, <see cref="SampleDirection"/>, controller name, action name and parameter names.
         /// </summary>
         /// <param name="mediaType">The media type.</param>
-        /// <param name="sampleDirection">The <see cref="SampleDirection" />.</param>
+        /// <param name="sampleDirection">The <see cref="SampleDirection"/>.</param>
         /// <param name="controllerName">Name of the controller.</param>
         /// <param name="actionName">Name of the action.</param>
         /// <param name="parameterNames">The parameter names.</param>
-        public HelpPageSampleKey(MediaTypeHeaderValue mediaType, SampleDirection sampleDirection, string controllerName,
-            string actionName, IEnumerable<string> parameterNames)
+        public HelpPageSampleKey(MediaTypeHeaderValue mediaType, SampleDirection sampleDirection, string controllerName, string actionName, IEnumerable<string> parameterNames)
             : this(sampleDirection, controllerName, actionName, parameterNames)
         {
             if (mediaType == null)
@@ -99,60 +95,60 @@ namespace P3Image.Web.Areas.HelpPage.SampleGeneration
         }
 
         /// <summary>
-        ///     Gets the name of the controller.
+        /// Gets the name of the controller.
         /// </summary>
         /// <value>
-        ///     The name of the controller.
+        /// The name of the controller.
         /// </value>
         public string ControllerName { get; private set; }
 
         /// <summary>
-        ///     Gets the name of the action.
+        /// Gets the name of the action.
         /// </summary>
         /// <value>
-        ///     The name of the action.
+        /// The name of the action.
         /// </value>
         public string ActionName { get; private set; }
 
         /// <summary>
-        ///     Gets the media type.
+        /// Gets the media type.
         /// </summary>
         /// <value>
-        ///     The media type.
+        /// The media type.
         /// </value>
         public MediaTypeHeaderValue MediaType { get; private set; }
 
         /// <summary>
-        ///     Gets the parameter names.
+        /// Gets the parameter names.
         /// </summary>
         public HashSet<string> ParameterNames { get; private set; }
 
         public Type ParameterType { get; private set; }
 
         /// <summary>
-        ///     Gets the <see cref="SampleDirection" />.
+        /// Gets the <see cref="SampleDirection"/>.
         /// </summary>
         public SampleDirection? SampleDirection { get; private set; }
 
         public override bool Equals(object obj)
         {
-            var otherKey = obj as HelpPageSampleKey;
+            HelpPageSampleKey otherKey = obj as HelpPageSampleKey;
             if (otherKey == null)
             {
                 return false;
             }
 
-            return string.Equals(ControllerName, otherKey.ControllerName, StringComparison.OrdinalIgnoreCase) &&
-                   string.Equals(ActionName, otherKey.ActionName, StringComparison.OrdinalIgnoreCase) &&
-                   (MediaType == otherKey.MediaType || (MediaType != null && MediaType.Equals(otherKey.MediaType))) &&
-                   ParameterType == otherKey.ParameterType &&
-                   SampleDirection == otherKey.SampleDirection &&
-                   ParameterNames.SetEquals(otherKey.ParameterNames);
+            return String.Equals(ControllerName, otherKey.ControllerName, StringComparison.OrdinalIgnoreCase) &&
+                String.Equals(ActionName, otherKey.ActionName, StringComparison.OrdinalIgnoreCase) &&
+                (MediaType == otherKey.MediaType || (MediaType != null && MediaType.Equals(otherKey.MediaType))) &&
+                ParameterType == otherKey.ParameterType &&
+                SampleDirection == otherKey.SampleDirection &&
+                ParameterNames.SetEquals(otherKey.ParameterNames);
         }
 
         public override int GetHashCode()
         {
-            var hashCode = ControllerName.ToUpperInvariant().GetHashCode() ^ ActionName.ToUpperInvariant().GetHashCode();
+            int hashCode = ControllerName.ToUpperInvariant().GetHashCode() ^ ActionName.ToUpperInvariant().GetHashCode();
             if (MediaType != null)
             {
                 hashCode ^= MediaType.GetHashCode();
@@ -165,7 +161,7 @@ namespace P3Image.Web.Areas.HelpPage.SampleGeneration
             {
                 hashCode ^= ParameterType.GetHashCode();
             }
-            foreach (var parameterName in ParameterNames)
+            foreach (string parameterName in ParameterNames)
             {
                 hashCode ^= parameterName.ToUpperInvariant().GetHashCode();
             }

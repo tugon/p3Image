@@ -17,9 +17,6 @@ function (config, httpService, $q) {
 		},
 		validateSave: function (entity) {
 			var messages = [];
-			if (!entity.CategoryId) {
-				messages.push("Category must be selected");
-			}
 			if (!entity.Description || entity.Description.trim() === "") {
 				messages.push("Description must be filled");
 			}

@@ -5,9 +5,13 @@
 { Id: 4, Name: "TextArea" }-->
 <div>
     <input ng-model="field" class="{{cssClass}}" type="text" ng-if="inputModel.FieldType==0" />
-    <input ng-model="field" type="checkbox" ng-if="inputModel.FieldType==1" />
-    <input ng-model="field" type="radio" ng-if="inputModel.FieldType==2" />
-    <select ng-model="field" ng-if="inputModel.FieldType==3" ng-options="field.Value as field.Text for field in model.FieldOptions" class="{{cssClass}}">
+    <input ng-model="field" type="checkbox" ng-if="inputModel.FieldType==1"/>
+    <div ng-if="inputModel.FieldType==2">
+        <label ng-repeat="option in inputModel.FieldOptions">
+            <input ng-model="field" name="{{inputModel.Description}}" type="radio" ng-value="{{option.Value}}" /> {{option.Text}}
+        </label>
+    </div>
+    <select ng-model="field" ng-if="inputModel.FieldType==3" ng-options="option.Value as option.Text for option in inputModel.FieldOptions" class="{{cssClass}}">
         <option value="">{{label}}</option>
     </select>
     <textarea ng-model="field" class="{{cssClass}}" ng-if="inputModel.FieldType==4"></textarea>

@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using P3Image.Domain.Interfaces.Repositories;
-using P3Image.Infra.Data.EF.Context;
 
 namespace P3Image.Infra.Data.Repositories
 {
-    public class BaseRepository<T> : IDisposable, IBaseRepository<T> where T : class
+    public class BaseRepository<T, TC> : IBaseRepository<T>
+        where TC : DbContext
+        where T : class
     {
-        private readonly P3ImageContext _db = new P3ImageContext();
+        private readonly TC _db;
         private readonly DbSet<T> _set;
 
-        public BaseRepository()
+        public BaseRepository(TC db)
         {
+            _db = db;
             _set = _db.Set<T>();
         }
 
@@ -49,14 +52,23 @@ namespace P3Image.Infra.Data.Repositories
             return entity;
         }
 
-        public IQueryable<T> Search(Func<T, bool> func)
+        public IQueryable<T> Search(Expression<Func<T, bool>> func)
         {
-            return _set.Where(func).AsQueryable();
+            IQueryable<T> query =_set;
+
+            if (func != null)
+            {
+                query = query.Where(func);
+            }
+
+            
+                return query;
         }
 
         public void Dispose()
         {
-            _db.Dispose();
+            if (_db != null)
+                _db.Dispose();
         }
     }
 }

@@ -22,7 +22,11 @@ function ($scope, $uibModal, config, categoryService, messageService) {
     }
 
     $scope.save = function () {
-
+        var result = categoryService.validateSave($scope.category);
+        if (result.length > 0) {
+            messageService.error(result.join("\n"));
+            return false;
+        }
         categoryService.save($scope.category)
             .then(
                 function (result) {

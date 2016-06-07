@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
-using P3Image.Domain.Interfaces.Services;
+//using P3Image.Domain.Interfaces.Services;
+using P3Image.App.Interfaces;
 
 namespace P3Image.Web.Api
 {
@@ -7,9 +8,9 @@ namespace P3Image.Web.Api
     public partial class FieldOptionController : ApiController
     {
         
-		private readonly IFieldOptionService _app;
+		private readonly IFieldOptionApp _app;
 
-        public FieldOptionController(IFieldOptionService app)
+        public FieldOptionController(IFieldOptionApp app)
         {
             _app = app;
         }

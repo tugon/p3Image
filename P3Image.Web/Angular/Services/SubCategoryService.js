@@ -32,7 +32,7 @@ App.factory("subCategoryService", ["config", "httpService", "$q",
     			},
     		validateSave: function (entity) {
     			var messages = [];
-    			if (!entity.CategoryId) {
+    			if (!entity.Category.Id) {
     				messages.push("Category must be selected");
     				}
     			if (!entity.Description || entity.Description.trim() === "") {

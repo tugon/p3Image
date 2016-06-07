@@ -35,7 +35,7 @@ namespace P3Image.Web.Api
             try
             {
                 var model = Mapper.Map<SubCategoryViewModel, SubCategory>(viewModel);
-                var result = viewModel.Id <= 0 ? _app.Add(model) : _app.Update(model);
+                var result = _app.Save(model);
                 return Ok(result);
             }
             catch
@@ -67,7 +67,7 @@ namespace P3Image.Web.Api
             try
             {
                 var model = Mapper.Map<FieldViewModel, Field>(fieldViewModel);
-                var result = _app.EditField(model);
+                Field result = _app.EditField(model);
                 return Ok(Mapper.Map<FieldViewModel>(result));
             }
             catch
@@ -99,7 +99,7 @@ namespace P3Image.Web.Api
             try
             {
                 var model = Mapper.Map<SubCategory>(subCategory);
-                var fields = _app.GetFields(model);
+                List<Field> fields = _app.GetFields(model);
                 return Ok(Mapper.Map<List<FieldViewModel>>(fields));
             }
             catch
@@ -128,7 +128,7 @@ namespace P3Image.Web.Api
         [HttpGet]
         public IHttpActionResult GetBySlug(string slugCategory,string slugSubCategory)
         {
-            var model = _app.GetBySlug(slugCategory,slugSubCategory);
+            SubCategory model = _app.GetBySlug(slugCategory,slugSubCategory);
             return Ok(model);
         }
     }

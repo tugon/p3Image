@@ -1,6 +1,6 @@
 ﻿
-App.controller("subCategoryController", ["$scope", "$rootScope", "$uibModal", "config", "subCategoryService", "messageService", "fieldService",
-function ($scope, $rootScope, $uibModal, config, subCategoryService, messageService, fieldService) {
+App.controller("subCategoryController", ["$scope", "$rootScope", "$uibModal", "config", "subCategoryService", "messageService", "fieldService", "fieldOptionService",
+function ($scope, $rootScope, $uibModal, config, subCategoryService, messageService, fieldService, fieldOptionService) {
     $scope.init = function () {
         $scope.getAll();
 
@@ -32,7 +32,7 @@ function ($scope, $rootScope, $uibModal, config, subCategoryService, messageServ
             messageService.error(result.join("\n"));
             return false;
         }
-
+        $scope.subCategory.CategoryId = $scope.subCategory.Category.Id;
         subCategoryService.save($scope.subCategory)
             .then(
                 function (result) {
@@ -60,14 +60,16 @@ function ($scope, $rootScope, $uibModal, config, subCategoryService, messageServ
 
     $scope.removeField = function (field, index) {
         if (messageService.confirm("Do you really want to remove the Field ")) {
-            fieldService.remove({ Id: field.Id });
+            fieldService.remove(field);
             $scope.Fields.splice(index, 1);
         }
     };
 
     $scope.saveField = function (field) {
+        $scope.field = field;
         if ($scope.subCategory && $scope.subCategory.Id) {
-            if (field && field.Id) {
+
+            if ($scope.field && $scope.field.Id) {
                 subCategoryService.editField($scope.field)
                     .then(
                         function (result) {
@@ -82,9 +84,11 @@ function ($scope, $rootScope, $uibModal, config, subCategoryService, messageServ
                             $scope.field.FieldTypeDescription = config.getFieldTypeById($scope.field.FieldType);
                             $scope.subCategory.Fields.push($scope.field);
                             $scope.closeAddField();
+                            field.ID = result.data.Id;
                         });
             }
         } else {
+            
             if (!$scope.subCategory.Fields)
                 $scope.subCategory.Fields = [];
             $scope.field.FieldTypeDescription = config.getFieldTypeById($scope.field.FieldType);
@@ -93,8 +97,23 @@ function ($scope, $rootScope, $uibModal, config, subCategoryService, messageServ
         }
     }
 
+    $scope.addFieldOption = function () {
+        $scope.field.FieldOptions.push({ Id: 0, FieldId: $scope.field.Id || 0 });
+    }
+
+    $scope.removeFieldOption = function (option, index) {
+        if (option && option.Id) {
+            fieldOptionService.remove({ Id: option.Id }).then(
+                function (result) {
+                    $scope.field.FieldOptions.splice(index, 1);
+                }
+                );
+        } else
+            $scope.field.FieldOptions.splice(index, 1);
+    }
+
+
     $scope.fieldTypeChanged = function (fieldType) {
-        alert(fieldType);
     }
 
     $scope.openAddField = function (subCategory, field) {
@@ -105,7 +124,7 @@ function ($scope, $rootScope, $uibModal, config, subCategoryService, messageServ
         if (field)
             $scope.field = field;
         else
-            $scope.field = { SubCategoryId: $scope.subCategory.Id, Order: order };
+            $scope.field = { SubCategoryId: $scope.subCategory.Id, Order: order, FieldOptions: [] };
 
 
         $scope.modalAddFieldInstance = $uibModal.open({

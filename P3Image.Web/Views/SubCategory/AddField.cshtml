@@ -1,27 +1,58 @@
 ﻿<div class="modal-content">
     <form>
         <div class="modal-header">
-			<button type="button" class="close modal-close" ng-click="closeAddField()" aria-hidden="true"><i class="ti ti-close"></i></button>
+            <button type="button" class="close modal-close" ng-click="closeAddField()" aria-hidden="true"><i class="ti ti-close"></i></button>
             <h2>FIELD</h2>
         </div>
         <div class="modal-body">
             <div class="row">
 
                 <input type="hidden" ng-model="field.Id"/>
-                <input type="hidden" ng-model="field.SubCategoryId" />
+                <input type="hidden" ng-model="field.SubCategoryId"/>
                 <div class="col-md-12">
-                    <div class=" form-group col-md-12">
+                    <div class=" form-group col-md-8">
                         <label class="control-label">DESCRIPTION</label>
-                        <input type="text" class="form-control" ng-model="field.Description" />
+                        <input type="text" class="form-control" ng-model="field.Description"/>
                     </div>
-                    <div class=" form-group col-md-6">
-                        <label class="control-label">ORDER</label>
-                        <input type="number" class="form-control" ng-model="field.Order" />
-                    </div>
-                    
-                    <div class=" form-group col-md-6">
+                    <div class=" form-group col-md-3">
                         <label class="control-label">FIELD TYPE</label>
                         <combo-field-type ng-model="field.FieldType" css-class="form-control" on-change="fieldTypeChanged" load-on-start="true" label="TYPES"></combo-field-type>
+                    </div>
+                    <div class=" form-group col-md-1">
+                        <label class="control-label">ORDER</label>
+                        <input type="number" min="1" max="99" class="form-control" ng-model="field.Order"/>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="panel panel-indigo" ng-if="field.FieldType==2 || field.FieldType==3">
+                    <div class="panel-heading">
+                        <h2>FIELD OPTIONS</h2>
+                        <div class="panel-ctrls">
+                            <a href="#" class="button-icon" uib-tooltip="add Field" tooltip-placement="left" ng-click="addFieldOption()"><i class="ti ti-plus"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table">
+                            <tr ng-repeat="option in field.FieldOptions track by $index">
+                                <td>
+                                    <input type="hidden" ng-model="option.Id" />
+                                    <input type="text" class="form-control" ng-model="option.Text" />
+                                </td>
+                                <td>
+                                    <div class="panel-ctrls">
+                                        <a href="#" class="button-icon" uib-tooltip="edit" ng-click="openEditFieldOption(option)">
+                                            <i class="ti ti-pencil-alt"></i>
+                                        </a>
+                                        <a href="#" class="button-icon" uib-tooltip="remove" ng-click="removeFieldOption(option,$index)">
+                                            <i class="ti ti-trash red"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>

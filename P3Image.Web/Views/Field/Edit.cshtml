@@ -1,0 +1,40 @@
+﻿<div class="modal-content">
+    <form>
+        <div class="modal-header">
+			<button type="button" class="close modal-close" ng-click="close()" aria-hidden="true"><i class="ti ti-close"></i></button>
+            <h2>FIELD</h2>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+
+                <input type="hidden" ng-model="field.Id" />
+                <div class="col-md-12">
+                    
+                    <div class=" form-group col-md-12">
+                        <label class="control-label">SUB CATEGORY ID</label>
+                        <combo-sub-category ng-model="field.SubCategory"></combo-sub-category>
+                        <input type="text" class="form-control" ng-model="field.SubCategoryId" />
+                    </div>
+                    <div class=" form-group col-md-12">
+                        <label class="control-label">ORDER</label>
+                        <input type="number" class="form-control" ng-model="field.Order" />
+                    </div>
+                    <div class=" form-group col-md-12">
+                        <label class="control-label">DESCRIPTION</label>
+                        <input type="text" class="form-control" ng-model="field.Description" />
+                    </div>
+                    <div class=" form-group col-md-12">
+                        <label class="control-label">FIELD TYPE</label>
+                        <combo-field-type ng-model="field.FieldType" start-on-load="true" label="TYPES"></combo-field-type>
+                        <input type="text" class="form-control" ng-model="field.FieldType" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="save()" class="btn btn-success">SAVE</button>
+            <button type="button" ng-click="close()" class="btn btn-default">CANCEL</button>
+        </div>
+    </form>
+</div>
+

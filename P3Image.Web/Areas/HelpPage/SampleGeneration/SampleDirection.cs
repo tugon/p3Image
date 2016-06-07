@@ -1,7 +1,7 @@
-namespace P3Image.Web.Areas.HelpPage.SampleGeneration
+namespace P3Image.Web.Areas.HelpPage
 {
     /// <summary>
-    ///     Indicates whether the sample is used for request or response
+    /// Indicates whether the sample is used for request or response
     /// </summary>
     public enum SampleDirection
     {

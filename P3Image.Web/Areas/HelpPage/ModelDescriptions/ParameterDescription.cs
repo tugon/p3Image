@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace P3Image.Web.Areas.HelpPage.ModelDescriptions

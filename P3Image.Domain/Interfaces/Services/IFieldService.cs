@@ -4,5 +4,6 @@ namespace P3Image.Domain.Interfaces.Services
 {
     public interface IFieldService : IBaseService<Field>
     {
+        Field Save(Field field);
     }
 }

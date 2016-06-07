@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
-using P3Image.Domain.Interfaces.Services;
+//using P3Image.Domain.Interfaces.Services;
+using P3Image.App.Interfaces;
 
 namespace P3Image.Web.Api
 {
@@ -7,9 +8,9 @@ namespace P3Image.Web.Api
     public partial class SubCategoryController : ApiController
     {
         
-		private readonly ISubCategoryService _app;
+		private readonly ISubCategoryApp _app;
 
-        public SubCategoryController(ISubCategoryService app)
+        public SubCategoryController(ISubCategoryApp app)
         {
             _app = app;
         }

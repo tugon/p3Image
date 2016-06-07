@@ -18,7 +18,8 @@ foreach(var classModel in classes){#>
 		var controller = classModel.Name+"Controller";
 		var spacedName = classSet.ToSpacedName(classModel.Name);
 #>using System.Web.Http;
-using P3Image.Domain.Interfaces.Services;
+//using P3Image.Domain.Interfaces.Services;
+using P3Image.App.Interfaces;
 
 namespace P3Image.Web.Api
 {
@@ -26,9 +27,9 @@ namespace P3Image.Web.Api
     public partial class <#= classModel.Name #>Controller : ApiController
     {
         
-		private readonly I<#= classModel.Name #>Service _app;
+		private readonly I<#= classModel.Name #>App _app;
 
-        public <#= classModel.Name #>Controller(I<#= classModel.Name #>Service app)
+        public <#= classModel.Name #>Controller(I<#= classModel.Name #>App app)
         {
             _app = app;
         }

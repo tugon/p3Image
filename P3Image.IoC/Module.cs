@@ -4,6 +4,7 @@ using P3Image.App.Interfaces;
 using P3Image.Domain.Interfaces.Repositories;
 using P3Image.Domain.Interfaces.Services;
 using P3Image.Domain.Services;
+using P3Image.Infra.Data.EF.Context;
 using P3Image.Infra.Data.Repositories;
 
 namespace P3Image.Infra.IoC
@@ -12,6 +13,7 @@ namespace P3Image.Infra.IoC
     {
         public override void Load()
         {
+            Bind<P3ImageContext>().ToSelf();
             Bind<ICategoryService>().To<CategoryService>();
             Bind<ISubCategoryService>().To<SubCategoryService>();
             Bind<IFieldService>().To<FieldService>();

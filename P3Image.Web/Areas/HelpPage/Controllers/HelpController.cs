@@ -1,11 +1,13 @@
+using System;
 using System.Web.Http;
 using System.Web.Mvc;
 using P3Image.Web.Areas.HelpPage.ModelDescriptions;
+using P3Image.Web.Areas.HelpPage.Models;
 
 namespace P3Image.Web.Areas.HelpPage.Controllers
 {
     /// <summary>
-    ///     The controller that will handle requests for the help page.
+    /// The controller that will handle requests for the help page.
     /// </summary>
     public class HelpController : Controller
     {
@@ -31,9 +33,9 @@ namespace P3Image.Web.Areas.HelpPage.Controllers
 
         public ActionResult Api(string apiId)
         {
-            if (!string.IsNullOrEmpty(apiId))
+            if (!String.IsNullOrEmpty(apiId))
             {
-                var apiModel = Configuration.GetHelpPageApiModel(apiId);
+                HelpPageApiModel apiModel = Configuration.GetHelpPageApiModel(apiId);
                 if (apiModel != null)
                 {
                     return View(apiModel);
@@ -45,9 +47,9 @@ namespace P3Image.Web.Areas.HelpPage.Controllers
 
         public ActionResult ResourceModel(string modelName)
         {
-            if (!string.IsNullOrEmpty(modelName))
+            if (!String.IsNullOrEmpty(modelName))
             {
-                var modelDescriptionGenerator = Configuration.GetModelDescriptionGenerator();
+                ModelDescriptionGenerator modelDescriptionGenerator = Configuration.GetModelDescriptionGenerator();
                 ModelDescription modelDescription;
                 if (modelDescriptionGenerator.GeneratedModels.TryGetValue(modelName, out modelDescription))
                 {

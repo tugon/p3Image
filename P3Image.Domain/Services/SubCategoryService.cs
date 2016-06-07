@@ -40,7 +40,12 @@ namespace P3Image.Domain.Services
 
         public SubCategory GetBySlug(string slugCategory, string slugSubCategory)
         {
-            return _rep.Search(x => x.Category.Slug == slugCategory && x.Slug == slugSubCategory).OrderBy(x=>x.Fields.OrderBy(y=>y.Order)).FirstOrDefault();
+            var subCategory = _rep.Search(x => x.Category.Slug == slugCategory && x.Slug == slugSubCategory).FirstOrDefault();
+
+            if (subCategory != null) 
+                subCategory.Fields = subCategory.Fields.OrderBy(x => x.Order).ToList();
+
+            return subCategory;
         }
     }
 }
