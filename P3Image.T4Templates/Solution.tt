@@ -1,0 +1,106 @@
+﻿<#@ template language="C#" hostSpecific="true" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#//@ include file="main.ttinclude" #>
+<#@ include file="$(SolutionDir)\Packages\T4.TemplateFileManager.2.2.1\tools\ttinc\TemplateFilemanager.CS.ttinclude" #>
+<#@ include file="ClassModel.ttinclude" #>
+<#@ output extension=".txt"  #><#
+var manager = TemplateFileManager.Create(this);
+var classes = new ClassSet().Load().Classes.OrderBy(u => u.Name);
+
+foreach(var classModel in classes){#>
+<#
+		manager.StartNewFile("Generated/"+classModel.Name+ "Repository.cs","Data","Repository");
+#>
+using Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Domain.Data.Repository.Interfaces;
+
+namespace Domain.Data.Repository
+{
+    public partial class <#=classModel.Name#>Repository : BaseRepository<MID_DatabaseContext, <#=classModel.Name#>>, I<#=classModel.Name#>Repository
+    {
+        public <#=classModel.Name#>Repository(MID_DatabaseContext context)
+            : base(context)
+        {
+        }
+    }
+
+}
+
+<#
+manager.EndBlock();
+
+manager.StartNewFile("Interfaces/Generated/I"+classModel.Name+ "Repository.cs","Data","Repository");
+#>
+using Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Domain.Data.Repository.Interfaces
+{
+    public partial interface I<#=classModel.Name#>Repository : IBaseRepository<<#=classModel.Name#>>
+    {
+    }
+}
+<#
+manager.EndBlock();
+
+manager.StartNewFile("Interfaces/Generated/I"+classModel.Name+ "Business.cs","Business","");
+#>
+using Domain.Data.Repository.Interfaces;
+using Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Domain.Business.Interfaces
+{
+    public partial interface I<#=classModel.Name#>Business : IBaseBusiness<<#=classModel.Name#>>
+    {
+		
+
+    }
+}
+
+<#
+manager.EndBlock();
+
+manager.StartNewFile("Generated/"+classModel.Name+ "Business.cs","Business","");
+#>
+using Domain.Data.Repository.Interfaces;
+using Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Domain.Business.Interfaces;
+
+namespace Domain.Business
+{
+    public partial class <#=classModel.Name#>Business : BaseBusiness<<#=classModel.Name#>>, I<#=classModel.Name#>Business
+    {
+        new I<#=classModel.Name#>Repository _repository;
+        public <#=classModel.Name#>Business(I<#=classModel.Name#>Repository repository)
+            : base(repository)
+        {
+            _repository = repository;
+        }
+    }
+}
+
+<#
+manager.EndBlock();
+}
+manager.Process();
+#>

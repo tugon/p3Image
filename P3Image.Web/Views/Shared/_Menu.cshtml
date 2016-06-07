@@ -1,0 +1,21 @@
+﻿<nav class="widget-body">
+    <ul class="acc-menu">
+       
+
+        <li>
+            <a href="javascript:;"><i class="ti ti-world"></i><span>FORMS</span></a>
+            <ul class="acc-menu" ng-controller="slugController" ng-init="getAll()">
+                <li ng-repeat="subCategory in subCategoryList"><a href="~/app/slug/{{subCategory.Category.Slug}}/{{subCategory.Slug}}" ng-click="pageChange('Category')">{{subCategory.Category.Slug}}/{{subCategory.Slug}}</a></li>
+                
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;"><i class="ti ti-settings"></i><span>ADM</span></a>
+            <ul class="acc-menu">
+                <li><a href="~/app/Category" ng-click="pageChange('Category')">CATEGORY</a></li>
+                <li><a href="~/app/SubCategory" ng-click="pageChange('SubCategory')">SUB CATEGORY</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>

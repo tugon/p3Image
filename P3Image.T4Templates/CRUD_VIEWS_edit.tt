@@ -1,0 +1,59 @@
+﻿<#@ template language="C#" hostSpecific="true" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="main.ttinclude" #>
+<#//@ include file="$(SolutionDir)\Packages\T4.TemplateFileManager.2.2.1\tools\ttinc\TemplateFilemanager.CS.ttinclude" #>
+<#@ include file="ClassModel.ttinclude" #>
+<#@ output extension=".txt"  #><#
+var manager = TemplateFileManager.Create(this);
+var classSet = new ClassSet();
+var classes = new ClassSet().Load().Classes.OrderBy(u => u.Name);
+
+foreach(var classModel in classes){#>
+<#
+
+		var camelCaseName = classSet.ToCamelCase(classModel.Name);
+		var service = classSet.ToCamelCase(classModel.Name)+"Service";
+		var controller = classSet.ToCamelCase(classModel.Name)+"Controller";
+		var spacedName = classSet.ToSpacedName(classModel.Name);
+
+
+
+		//if(Directory.Exists(GetCurrentDirectory()+"..\\..\\MultigranBID\\Views\\"+classModel.Name+"\\")){
+		manager.StartNewFile("Views\\_Generated\\Edit\\"+classModel.Name+".cshtml","P3Image.Web","",null);
+#>
+<div class="modal-content">
+    <form>
+        <div class="modal-header">
+			<button type="button" class="close modal-close" ng-click="close()" aria-hidden="true"><i class="ti ti-close"></i></button>
+            <h2><#=spacedName.ToUpper()#></h2>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+
+                <input type="hidden" ng-model="<#=camelCaseName#>.Id" />
+                <div class="col-md-12">
+<# foreach(var field in classModel.Fields){#>
+<# if(!field.IsClass) {#>
+                    <div class=" form-group col-md-12">
+                        <label class="control-label"><#= classSet.ToSpacedName(field.Name).ToUpper() #></label>
+                        <input type="text" class="form-control" ng-model="<#=camelCaseName#>.<#=field.Name#>" />
+                    </div>
+<#}}#>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="save()" class="btn btn-success">SAVE</button>
+            <button type="button" ng-click="close()" class="btn btn-default">CANCEL</button>
+        </div>
+    </form>
+</div>
+
+<#
+manager.EndBlock();
+
+}
+ manager.Process(); #>

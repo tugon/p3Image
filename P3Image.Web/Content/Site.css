@@ -1,0 +1,53 @@
+﻿
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #b94a48;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #b94a48;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.badge-product-link {
+    position: relative !important;
+    left: 20px !important;
+    top: -10px !important;
+}
+.drop-area {
+    min-height:200px;
+    /*width:inherit;
+    height:400px;
+    overflow-x:hidden;
+    overflow-y:scroll;
+    position:fixed;
+    display:block;*/
+    
+}
+.modal-close{
+    font-size:12px !important
+}
+.modal-header h2{
+    text-transform:uppercase !important;
+}
+
+.mytable th{
+    text-align:center !important;
+    vertical-align:middle !important;
+}

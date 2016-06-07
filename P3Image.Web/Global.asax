@@ -1,0 +1,1 @@
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="P3Image.Web.WebApiApplication" Language="C#" %>

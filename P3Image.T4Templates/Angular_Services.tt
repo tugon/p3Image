@@ -1,0 +1,49 @@
+﻿<#@ template language="C#" hostSpecific="true" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="main.ttinclude" #>
+<#//@ include file="$(SolutionDir)\Packages\T4.TemplateFileManager.2.2.1\tools\ttinc\TemplateFilemanager.CS.ttinclude" #>
+<#@ include file="ClassModel.ttinclude" #>
+<#@ output extension=".txt"  #><#
+var manager = TemplateFileManager.Create(this);
+var classSet = new ClassSet();
+var classes = new ClassSet().Load().Classes.OrderBy(u => u.Name);
+
+foreach(var classModel in classes){#>
+<#
+//if(!File.Exists(Path.Combine(GetCurrentDirectory(),"..\\..\\MultigranBID\\Angular\\Services\\"+classModel.Name+ "Service.js"))){
+		manager.StartNewFile("Angular\\Services\\"+classModel.Name+ "Service.txt","P3Image.Web","",null);
+		var camelCaseName = classSet.ToCamelCase(classModel.Name);
+		var service = camelCaseName+"Service";
+		var controller = camelCaseName+"Controller";
+		var spacedName = classSet.ToSpacedName(classModel.Name);
+#>
+
+
+App.factory('<#=service#>', ['config', 'httpService', '$q',
+function (config, httpService, $q) {
+    return {
+        save: function (entity) {
+            return httpService.post('api/<#=camelCaseName#>/save', entity);
+        },
+        getAll: function () {
+            return httpService.get('api/<#=camelCaseName#>/getAll');
+        },
+        getById: function (id) {
+            return httpService.get('api/<#=camelCaseName#>/getById', { id: id });
+        },
+        remove: function (entity) {
+            return httpService.post('api/<#=camelCaseName#>/remove', entity);
+        }
+    }
+}]);
+
+<#
+manager.EndBlock();
+#>
+<#
+}
+manager.Process();
+#>

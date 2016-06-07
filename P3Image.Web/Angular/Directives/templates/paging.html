@@ -1,0 +1,6 @@
+﻿{{paging}}
+<ul class="pagination m-n pull-right">
+    <li class="disabled" ><a href="#"><i class="ti ti-angle-left"></i></a></li>
+    <li><a href="#" ng-repeat="n in pages track by $index" ng-click="pageChange(n)">{{n}}</a></li>
+    <li><a href="#"><i class="ti ti-angle-right"></i></a></li>
+</ul>

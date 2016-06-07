@@ -1,0 +1,84 @@
+﻿<div class="modal-content">
+    <form>
+        <div class="modal-header">
+            <button type="button" class="close modal-close" ng-click="close()" aria-hidden="true"><i class="ti ti-close"></i></button>
+            <h2>SUB CATEGORY</h2>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+
+                <input type="hidden" ng-model="subCategory.Id" />
+                <div class="form-group col-md-12">
+                    <label class="control-label">CATEGORY</label>
+                    <combo-category ng-model="subCategory.Category" css-class="form-control" load-on-start="true" label="CATEGORIES"></combo-category>
+
+                </div>
+                <div class="form-group col-md-12">
+                    <label class="control-label">DESCRIPTION</label>
+                    <input type="text" class="form-control" ng-model="subCategory.Description" />
+                </div>
+                <div class="form-group col-md-12">
+                    <label class="control-label">SLUG</label>
+                    <input type="text" class="form-control" ng-model="subCategory.Slug" />
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2>FIELDS</h2>
+                        <div class="panel-ctrls">
+                            <a href="#" class="button-icon" uib-tooltip="add Field" tooltip-placement="left" ng-click="openAddField(subCategory)"><i class="ti ti-plus"></i></a>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table">
+                            <tr>
+
+                                <th>
+                                    ORDER
+                                </th>
+                                <th>
+                                    DESCRIPTION
+                                </th>
+                                <th>
+                                    FIELD TYPE
+                                </th>
+
+                            </tr>
+                            <tr ng-repeat="field in subCategory.Fields">
+
+                                <td>
+                                    {{field.Order}}
+                                </td>
+                                <td>
+                                    {{field.Description}}
+                                </td>
+                                <td>
+                                    {{field.FieldTypeDescription}}
+                                </td>
+                                <td>
+                                    <div class="panel-ctrls">
+                                        <a href="#" class="button-icon" uib-tooltip="edit" ng-click="openAddField(subCategory,field)">
+                                            <i class="ti ti-pencil-alt"></i>
+                                        </a>
+                                        <a href="#" class="button-icon" uib-tooltip="remove" ng-click="removeField(field,$index)">
+                                            <i class="ti ti-trash red"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" ng-click="save()" class="btn btn-success">SAVE</button>
+            <button type="button" ng-click="close()" class="btn btn-default">CANCEL</button>
+        </div>
+    </form>
+</div>
+

@@ -1,0 +1,97 @@
+﻿<#@ template language="C#" hostSpecific="true" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="main.ttinclude" #>
+<#//@ include file="$(SolutionDir)\Packages\T4.TemplateFileManager.2.2.1\tools\ttinc\TemplateFilemanager.CS.ttinclude" #>
+<#@ include file="ClassModel.ttinclude" #>
+<#@ output extension=".txt"  #><#
+var manager = TemplateFileManager.Create(this);
+var classSet = new ClassSet();
+var classes = new ClassSet().Load().Classes.OrderBy(u => u.Name);
+
+foreach(var classModel in classes){#>
+<#
+
+		var camelCaseName = classSet.ToCamelCase(classModel.Name);
+		var service = classSet.ToCamelCase(classModel.Name)+"Service";
+		var controller = classSet.ToCamelCase(classModel.Name)+"Controller";
+		var spacedName = classSet.ToSpacedName(classModel.Name);
+
+		//if(Directory.Exists(GetCurrentDirectory()+"..\\..\\MultigranBID\\Views\\"+classModel.Name+"\\")){
+		manager.StartNewFile("Views\\_Generated\\Index\\"+classModel.Name+".cshtml","P3Image.Web","",null);
+#>
+<div class="row" ng-init="init()">
+    <div class="col-md-12">
+        <div class="panel panel-indigo">
+            <div class=" panel-heading">
+                <h2><#=spacedName.ToUpper()#></h2>
+                <div class="panel-ctrls">
+                    <a href="#" class="button-icon" uib-tooltip="new <#=spacedName#>" tooltip-placement="left" ng-click="openEdit()"><i class="ti ti-file"></i></a>
+                </div>
+            </div>
+		</div>
+        <div class="panel panel-indigo">
+            <div class=" panel-body">
+                <table class="table">
+                    <tr>
+<# foreach(var field in classModel.Fields){#>
+<# if(!field.IsClass) {#>
+                        <th>
+                            <#= classSet.ToSpacedName(field.Name).ToUpper() #>
+                        </th>   
+<#}}#>                      
+                    </tr>
+                    <tr ng-repeat="<#=classSet.ToCamelCase(classModel.Name)#> in <#=classSet.ToCamelCase(classModel.Name)#>List">
+<# foreach(var field in classModel.Fields){#>
+<# if(!field.IsClass) {#>
+                        <td>
+                            {{<#=classSet.ToCamelCase(classModel.Name)#>.<#=field.Name#>}}
+                        </td>
+<#}}#>
+                        <td>
+                            <div class="panel-ctrls">
+                                <a href="#" class="button-icon" uib-tooltip="edit" ng-click="openEdit(<#=classSet.ToCamelCase(classModel.Name)#>)">
+                                    <i class="ti ti-pencil-alt"></i>
+                                </a>
+                                <a href="#" class="button-icon" uib-tooltip="remove" ng-click="remove(<#=classSet.ToCamelCase(classModel.Name)#>,$index)">
+                                    <i class="ti ti-trash red"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+
+                </table>
+                <uib-pagination total-items="paging.count" max-size="10" ng-model="currentPage" class="pagination m-n pull-right" boundary-links="true" rotate="false" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+<#
+manager.EndBlock();
+
+}
+
+#>
+<li>
+    <a href="javascript:;"><i class="ti ti-server"></i><span>Master Data</span></a>
+		<ul class="acc-menu">
+<#foreach(var classModel in classes){#>
+			<li><a href="~/app/<#= classModel.Name #>" ng-click="pageChange('<#= classModel.Name #>')"><#= classSet.ToSpacedName(classModel.Name).ToUpper() #></a></li>
+<#}#>
+		</ul>
+</li>
+
+
+<#foreach(var classModel in classes){#>
+    .when('/app/<#= classModel.Name #>', {
+        templateUrl: '/<#= classModel.Name #>',
+        controller: '<#= classSet.ToCamelCase(classModel.Name) #>Controller',
+    })
+<#}#>
+<#foreach(var classModel in classes){#>
+mkdir <#= Path.Combine(GetCurrentDirectory(),"..\\..\\MultigranBID\\Views\\"+classModel.Name+ "\\")#>
+<#}#>
+<# manager.Process(); #>

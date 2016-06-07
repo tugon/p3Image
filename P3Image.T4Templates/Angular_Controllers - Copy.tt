@@ -1,0 +1,99 @@
+﻿<#@ template language="C#" hostSpecific="true" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="main.ttinclude" #>
+<#//@ include file="$(SolutionDir)\Packages\T4.TemplateFileManager.2.2.1\tools\ttinc\TemplateFilemanager.CS.ttinclude" #>
+<#@ include file="ClassModel.ttinclude" #>
+<#@ output extension=".txt"  #><#
+var manager = TemplateFileManager.Create(this);
+var classSet = new ClassSet();
+var classes = new ClassSet().Load().Classes.OrderBy(u => u.Name);
+
+foreach(var classModel in classes){#>
+<#
+
+		manager.StartNewFile("Angular\\Controllers\\"+classModel.Name+ "Controller.txt","P3Image.Web","",null);
+		var camelCaseName = classSet.ToCamelCase(classModel.Name);
+		var service = classSet.ToCamelCase(classModel.Name)+"Service";
+		var controller = classSet.ToCamelCase(classModel.Name)+"Controller";
+		var spacedName = classSet.ToSpacedName(classModel.Name);
+#>
+
+App.controller("<#= camelCaseName #>Controller", ["$scope", "$uibModal", "config", "<#= camelCaseName #>Service", "messageService",
+function ($scope, $uibModal, config, <#= camelCaseName #>Service, messageService) {
+    $scope.init = function () {
+        $scope.getAll();
+
+    }
+
+    $scope.getAll = function () {
+        <#= camelCaseName #>Service.getAll()
+            .then(
+                function(result) {
+                    $scope.<#= camelCaseName #>List = result.data;
+                },
+                function(error) {
+                    messageService.error(error.data);
+                }
+            );
+    }
+
+    $scope.close = function () {
+        $scope.modalInstance.close();
+    }
+
+    $scope.save = function () {
+		var entity = {};
+<# foreach(var field in classModel.Fields){#>
+<# if(!field.IsClass) {#>
+        entity.<#= field.Name#> = $scope.<#= camelCaseName #>.<#= field.Name#> ;
+<#}}#>
+
+        <#= service #>.save(entity).then(
+            function (result) {
+                if (!$scope.<#= camelCaseName #>.Id) {
+                    $scope.<#= camelCaseName #>List.push(result.data);
+                }
+                messageService.success("<#= spacedName #> saved successfully");
+                $scope.close();
+            },
+            function (error) {
+                messageService.error(error.data);
+                //$scope.close();
+            }
+        );
+    }
+
+    $scope.remove = function (<#= camelCaseName #>, index) {
+        if (messageService.confirm("Do you really want to remove the <#= spacedName #> ")) {
+            <#=service #>.remove({Id:<#= camelCaseName #>.Id});
+            $scope.<#= camelCaseName #>List.splice(index, 1);
+        }
+    };
+
+    $scope.openEdit = function (<#= camelCaseName #>) {
+        $scope.<#= camelCaseName #> = <#= camelCaseName #>;
+
+        $scope.modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: config.baseUrl + "<#= camelCaseName #>/Edit",
+            scope: $scope,
+            size: "lg",
+            backdrop: "static"
+        });
+    }
+
+
+
+
+}]);
+<#
+manager.EndBlock();
+#>
+<#
+}
+manager.Process();
+#>

@@ -1,0 +1,97 @@
+﻿<#@ template language="C#" hostSpecific="true" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="main.ttinclude" #>
+<#//@ include file="$(SolutionDir)\Packages\T4.TemplateFileManager.2.2.1\tools\ttinc\TemplateFilemanager.CS.ttinclude" #>
+<#@ include file="ClassModel.ttinclude" #>
+<#@ output extension=".txt"  #><#
+var manager = TemplateFileManager.Create(this);
+var classSet = new ClassSet();
+var classes = new ClassSet().Load().Classes.OrderBy(u => u.Name);
+
+foreach(var classModel in classes){#>
+<#
+		manager.StartNewFile("Api\\Generated\\"+classModel.Name+ "Controller.cs","P3Image.Web","",null);
+		var camelCaseName = classSet.ToCamelCase(classModel.Name);
+		var controller = classModel.Name+"Controller";
+		var spacedName = classSet.ToSpacedName(classModel.Name);
+#>using System.Web.Http;
+using P3Image.Domain.Interfaces.Services;
+
+namespace P3Image.Web.Api
+{
+    [RoutePrefix("api/<#= classModel.Name #>")]
+    public partial class <#= classModel.Name #>Controller : ApiController
+    {
+        
+		private readonly I<#= classModel.Name #>Service _app;
+
+        public <#= classModel.Name #>Controller(I<#= classModel.Name #>Service app)
+        {
+            _app = app;
+        }
+		/*
+
+		[Route("getById")]
+        [HttpGet]
+        public IHttpActionResult GetById(int id)
+        {
+            var model = _app.GetById(id);
+            return Ok(model);
+        }
+
+        [Route("getAll")]
+        [HttpGet]
+        public IHttpActionResult GetByAll()
+        {
+            var model = _app.GetAll().ToList();
+            return Ok(Mapper.Map<List<<#= classModel.Name #>>, List<<#= classModel.Name #>ViewModel>>(model));
+        }
+		
+
+        [Route("save")]
+        [HttpPost]
+        public IHttpActionResult Save(<#= classModel.Name #>ViewModel viewModel)
+        {
+            
+			
+            try
+            { 
+				var model = Mapper.Map<<#= classModel.Name #>ViewModel, <#= classModel.Name #>>(viewModel);
+                var result = viewModel.Id <= 0 ? _app.Add(model) : _app.Update(model);
+                return Ok(result);
+            }
+            catch
+            {
+                return BadRequest("Error while saving <#= spacedName #>");
+            }
+        }
+
+		[Route("remove")]
+        [HttpPost]
+        public IHttpActionResult Remove(<#= classModel.Name #>ViewModel viewModel)
+        {
+            try
+            {
+				var model = Mapper.Map<<#= classModel.Name #>ViewModel, <#= classModel.Name #>>(viewModel);
+                _app.Remove(model);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest("Error while deleting <#= spacedName #>");
+            }
+        }
+		*/
+
+    }
+}
+
+<#
+manager.EndBlock();
+
+}
+manager.Process();
+#>

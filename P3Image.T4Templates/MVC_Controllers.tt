@@ -1,0 +1,45 @@
+﻿<#@ template language="C#" hostSpecific="true" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ include file="main.ttinclude" #>
+<#//@ include file="$(SolutionDir)\Packages\T4.TemplateFileManager.2.2.1\tools\ttinc\TemplateFilemanager.CS.ttinclude" #>
+<#@ include file="ClassModel.ttinclude" #>
+<#@ output extension=".txt"  #><#
+var manager = TemplateFileManager.Create(this);
+var classSet = new ClassSet();
+var classes = new ClassSet().Load().Classes.OrderBy(u => u.Name);
+
+foreach(var classModel in classes){#>
+<#
+		manager.StartNewFile("Controllers\\_generated\\"+classModel.Name+ "Controller.cs","P3Image.Web","",null);
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace P3Image.Web.Controllers
+{
+    public partial class <#= classModel.Name #>Controller : Controller
+    {
+        public ActionResult Index()
+        {
+            return PartialView();
+        }
+
+        public ActionResult Edit()
+        {
+            return PartialView();
+        }
+
+	}
+}
+<#
+manager.EndBlock();
+
+}
+manager.Process();
+#>

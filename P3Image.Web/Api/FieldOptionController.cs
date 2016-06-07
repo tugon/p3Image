@@ -1,0 +1,65 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
+using AutoMapper;
+using P3Image.Domain.Entities;
+using P3Image.Domain.Interfaces.Services;
+using P3Image.Web.ViewModels;
+
+namespace P3Image.Web.Api
+{
+    public partial class FieldOptionController
+    {
+
+        [Route("getById")]
+        [HttpGet]
+        public IHttpActionResult GetById(int id)
+        {
+            var model = _app.GetById(id);
+            return Ok(model);
+        }
+
+        [Route("getAll")]
+        [HttpGet]
+        public IHttpActionResult GetByAll()
+        {
+            var model = _app.GetAll().ToList();
+            return Ok(Mapper.Map<List<FieldOption>, List<FieldOptionViewModel>>(model));
+        }
+
+
+        [Route("save")]
+        [HttpPost]
+        public IHttpActionResult Save(FieldOptionViewModel viewModel)
+        {
+
+
+            try
+            {
+                var model = Mapper.Map<FieldOptionViewModel, FieldOption>(viewModel);
+                var result = viewModel.Id <= 0 ? _app.Add(model) : _app.Update(model);
+                return Ok(result);
+            }
+            catch
+            {
+                return BadRequest("Error while saving Field Option");
+            }
+        }
+
+        [Route("remove")]
+        [HttpPost]
+        public IHttpActionResult Remove(FieldOptionViewModel viewModel)
+        {
+            try
+            {
+                var model = Mapper.Map<FieldOptionViewModel, FieldOption>(viewModel);
+                _app.Remove(model);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest("Error while deleting Field Option");
+            }
+        }
+    }
+}

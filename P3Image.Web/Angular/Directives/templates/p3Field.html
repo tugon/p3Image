@@ -1,0 +1,14 @@
+﻿<!--{ Id: 0, Name: "Text" },
+{ Id: 1, Name: "CheckBox" },
+{ Id: 2, Name: "Radio" },
+{ Id: 3, Name: "Select" },
+{ Id: 4, Name: "TextArea" }-->
+<div>
+    <input ng-model="field" class="{{cssClass}}" type="text" ng-if="inputModel.FieldType==0" />
+    <input ng-model="field" type="checkbox" ng-if="inputModel.FieldType==1" />
+    <input ng-model="field" type="radio" ng-if="inputModel.FieldType==2" />
+    <select ng-model="field" ng-if="inputModel.FieldType==3" ng-options="field.Value as field.Text for field in model.FieldOptions" class="{{cssClass}}">
+        <option value="">{{label}}</option>
+    </select>
+    <textarea ng-model="field" class="{{cssClass}}" ng-if="inputModel.FieldType==4"></textarea>
+</div>

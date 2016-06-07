@@ -1,0 +1,20 @@
+﻿<div class="row" ng-init="init()">
+    <div class="col-md-12">
+        <div class="panel panel-indigo">
+            <div class=" panel-heading">
+                <h2><span ng-if="subCategory && subCategory.Category">{{subCategory.Category.Description}}</span><span ng-if="subCategory"> - {{subCategory.Description}}</span></h2>
+                <div class="panel-ctrls">
+                    <a href="#" class="button-icon" uib-tooltip="new Field Option" tooltip-placement="left" ng-click="openEdit()"><i class="ti ti-file"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-indigo">
+            <div class=" panel-body">
+                <div class=" form-group col-md-12" ng-repeat="field in subCategory.Fields">
+                    <label class="control-label">{{field.Order}} - {{field.Description}}</label>
+                    <p3-field ng-model="field" css-class="form-control"></p3-field>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
